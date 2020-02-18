@@ -5,11 +5,14 @@ mpi_head:
       - "22"
     links: 
       - mpi_node
+    volumes:
+      - ./mpi4py_benchmarks:/home/mpirun/mpi4py_benchmarks
 
 mpi_node:
     build: .
     # image: openmpi
-
+    volumes:
+      - ./mpi4py_benchmarks:/home/mpirun/mpi4py_benchmarks
 
 # version: "2"
 
