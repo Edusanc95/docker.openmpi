@@ -22,15 +22,21 @@ rebuild:
 main:
 	# 1 worker node
 	docker-compose scale mpi_head=1 mpi_node=1
-	docker-compose exec --privileged mpi_head mpirun -n 1 python /home/mpirun/mpi4py_benchmarks/all_tests.py
+	docker-compose exec --privileged mpi_head mpirun --allow-run-as-root -n 1 python /home/mpirun/mpi4py_benchmarks/all_tests.py
 	docker-compose down
 
 	# 2 worker nodes
 	docker-compose scale mpi_head=1 mpi_node=2
-	docker-compose exec --privileged mpi_head mpirun -n 2 python /home/mpirun/mpi4py_benchmarks/all_tests.py
+	docker-compose exec --privileged mpi_head mpirun --allow-run-as-root -n 2 python /home/mpirun/mpi4py_benchmarks/all_tests.py
 	docker-compose down
 
 	# ${NNODES} worker nodes
 	docker-compose scale mpi_head=1 mpi_node=${NNODES}
-	docker-compose exec --privileged mpi_head mpirun -n ${NNODES} python /home/mpirun/mpi4py_benchmarks/all_tests.py
+	docker-compose exec --privileged mpi_head mpirun --allow-run-as-root -n ${NNODES} python /home/mpirun/mpi4py_benchmarks/all_tests.py
+	docker-compose down
+
+class_example0:
+	docker-compose scale mpi_head=1 mpi_node=1
+	docker-compose exec --privileged mpi_head mpicc /home/mpirun/mpi4py_benchmarks/example0.c 
+	docker-compose exec --privileged mpi_head mpirun -nooversubscribe --allow-run-as-root -n 1 a.out
 	docker-compose down
